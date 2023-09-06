@@ -1,0 +1,5 @@
+/msp430-gcc-*
+/docs/
+zig-cache/
+zig-out/
+*.o
