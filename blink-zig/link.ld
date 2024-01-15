@@ -1,9 +1,13 @@
 /* There are more interrupt vectors, but the user guide states: "Unassigned interrupt vectors can be
  * used for regular program code if necessary." */
 MEMORY {
+  RAM (w)      : ORIGIN = 0x0200, LENGTH = 512
   ROM (rx)     : ORIGIN = 0xC000, LENGTH = 0x3FFE
   VECTORS_RST  : ORIGIN = 0xFFFE, LENGTH = 0x0002
 }
+
+__ram_start = ORIGIN(RAM);
+__ram_end = ORIGIN(RAM) + LENGTH(RAM);
 
 SECTIONS
 {
