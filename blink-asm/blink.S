@@ -1,4 +1,4 @@
-.section ".reset", #alloc  /* the .reset needs to be alloc, otherwise the flashing tool does not know that this needs to be flashed -- took me quite a while to figure that out */
+.section .reset, "a"       /* the .reset needs to be alloc, otherwise the flashing tool does not know that this needs to be flashed -- took me quite a while to figure that out */
     .word 0xc000           /* start at beginning of ROM */
 
 .text
