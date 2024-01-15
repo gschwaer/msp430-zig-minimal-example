@@ -9,6 +9,19 @@ The LED will will blink every half a second or so.
 See also [`../Readme.md`](../Readme.md).
 
 
+## Learnings
+
+- `msp430-elf-gcc` does a `clr r12` before calling `main`. By the MSP430 EABI this sets the first
+  argument of `main` to zero. The reason is presumably to prevent code in `main` from trying to
+  evaluate `argv` in case `main` is defined as `main(int argc, char *argv[])`.
+- `volatile` was added to `unsigned int i` to keep the compiler from optimizing out the delay loop
+  (algorithmically the loop has no effect). `volatile` tells the compiler that operations on this
+  variable have side effects, so they may not be eliminated. However, since `i` is a stack/automatic
+  variable, this forces the compiler put this variable on the stack. Also every operation needs to
+  be performed on the stack variable. Curiously: When removing `volatile` and even when optimizing
+  with `-O3`, the delay loop is not optimized out. That may be due to some other compiler smarts.
+
+
 ## Generated Assembly (For Reference)
 
 ```
