@@ -16,8 +16,8 @@ See also [`../Readme.md`](../Readme.md).
 
 ## Additional Relevant Documents
 
-- [LD Linker Scripts](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_chapter/ld_3.html)
-- [GCC Assembler Directives](https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_chapter/as_7.html)
+- see [`../blink-asm/Readme.md`](../blink-asm/Readme.md).
+- [GCC Inline Assembly Operand Constraints](https://gcc.gnu.org/onlinedocs/gcc/Simple-Constraints.html)
 
 
 ## Learnings

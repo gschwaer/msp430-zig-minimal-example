@@ -11,8 +11,8 @@ See also [`../Readme.md`](../Readme.md).
 
 ## Additional Relevant Documents
 
-- [LD Linker Scripts](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_chapter/ld_3.html)
-- [GCC Assembler Directives](https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_chapter/as_7.html)
+- [LD Linker Scripts](https://sourceware.org/binutils/docs/ld.html)
+- [GCC Assembler Directives](https://sourceware.org/binutils/docs/as.html#Pseudo-Ops)
 
 
 ## Generated Assembly (For Reference)
