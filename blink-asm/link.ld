@@ -18,4 +18,11 @@ SECTIONS
     KEEP (*(.init))
     KEEP (*(.text))
   } > ROM
+
+  /* Discard auto generated sections for simplicity of output assembly inspection. */
+  /DISCARD/ :
+  {
+    *(.MSP430.attributes)
+    *(.comment)
+  }
 }

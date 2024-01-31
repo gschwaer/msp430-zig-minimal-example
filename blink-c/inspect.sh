@@ -1,1 +1,1 @@
-msp430-elf-objdump -Dx blink.o | less
+msp430-elf-objdump -Dx blink.bin | less

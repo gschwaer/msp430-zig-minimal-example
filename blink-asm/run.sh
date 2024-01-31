@@ -2,8 +2,7 @@
 # needs mspdebug: sudo apt install mspdebug
 
 echo
-echo '>>> USE `prog blink.o` AND `run`'
+echo '>>> USE `prog blink.bin` AND `run`'
 echo
 
 mspdebug rf2500
-

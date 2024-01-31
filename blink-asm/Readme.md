@@ -18,10 +18,10 @@ See also [`../Readme.md`](../Readme.md).
 ## Generated Assembly (For Reference)
 
 ```
-blink.o:     file format elf32-msp430
-blink.o
-architecture: msp:14, flags 0x00000102:
-EXEC_P, D_PAGED
+blink.bin:     file format elf32-msp430
+blink.bin
+architecture: msp:14, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
 start address 0x0000c000
 
 Program Header:
@@ -37,7 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
   1 .text         00000014  0000c000  0000c000  00000074  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
 SYMBOL TABLE:
-no symbols
+0000fffe l    d  .reset 00000000 .reset
+0000c000 l    d  .text  00000000 .text
+00000000 l    df *ABS*  00000000 blink.o
+0000c000 l       .text  00000000 start
+0000c00e l       .text  00000000 loop
 
 
 
@@ -48,11 +52,13 @@ Disassembly of section .reset:
 
 Disassembly of section .text:
 
-0000c000 <.text>:
+0000c000 <start>:
     c000:       31 40 00 04     mov     #1024,  r1      ;#0x0400
     c004:       b2 40 80 5a     mov     #23168, &0x0120 ;#0x5a80
     c008:       20 01
     c00a:       d2 d3 22 00     bis.b   #1,     &0x0022 ;r3 As==01
+
+0000c00e <loop>:
     c00e:       d2 e3 21 00     xor.b   #1,     &0x0021 ;r3 As==01
     c012:       fd 3f           jmp     $-4             ;abs 0xc00e
 ```

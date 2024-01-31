@@ -56,10 +56,10 @@ See also [`../Readme.md`](../Readme.md).
 (with Zig `0.12.0-dev`)
 
 ```
-blink.o:     file format elf32-msp430
-blink.o
-architecture: msp:14, flags 0x00000102:
-EXEC_P, D_PAGED
+blink.bin:     file format elf32-msp430
+blink.bin
+architecture: msp:14, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
 start address 0x0000c000
 
 Program Header:
@@ -75,20 +75,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
   1 .text         00000018  0000c000  0000c000  00000074  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
 SYMBOL TABLE:
-no symbols
+0000fffe l    d  .reset 00000000 .reset
+0000c000 l    d  .text  00000000 .text
+00000000 l    df *ABS*  00000000 blink
+00000200 g       .reset 00000000 __ram_start
+00000400 g       .reset 00000000 __ram_end
+0000fffe g     O .reset 00000002 __reset
+0000c000 g     F .text  00000008 _start
+0000c008 g     F .text  00000010 main
 
 
 
 Disassembly of section .reset:
 
-0000fffe <.reset>:
+0000fffe <__reset>:
     fffe:       00 c0           interrupt service routine at 0xc000
 
 Disassembly of section .text:
 
-0000c000 <.text>:
+0000c000 <_start>:
     c000:       31 40 00 04     mov     #1024,  r1      ;#0x0400
     c004:       b0 12 08 c0     call    #-16376 ;#0xc008
+
+0000c008 <main>:
     c008:       b2 40 80 5a     mov     #23168, &0x0120 ;#0x5a80
     c00c:       20 01
     c00e:       d2 d3 22 00     bis.b   #1,     &0x0022 ;r3 As==01

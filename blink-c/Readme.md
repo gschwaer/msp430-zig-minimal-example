@@ -25,8 +25,8 @@ See also [`../Readme.md`](../Readme.md).
 ## Generated Assembly (For Reference)
 
 ```
-blink.o:     file format elf32-msp430
-blink.o
+blink.bin:     file format elf32-msp430
+blink.bin
 architecture: msp:14, flags 0x00000102:
 EXEC_P, D_PAGED
 start address 0x0000c000
