@@ -1,10 +1,5 @@
 # Blink In Zig
 
-It seems to be presently impossible to place sections to specific addresses
-([supported maybe planned](https://github.com/ziglang/zig/issues/3206)). So instead, we put all code
-and data in sections and use the regular `msp430-elf-ld` linker + a linker script to place
-everything where it needs to be.
-
 See also [`../Readme.md`](../Readme.md).
 
 
@@ -22,9 +17,8 @@ See also [`../Readme.md`](../Readme.md).
 
 ## Learnings
 
-- No direct placement of sections from Zig possible. We can put arbitrary values in sections with
-  `export` and `linksection(".section")` though. So a separate linker run is required, which does
-  the placement using a linker script. ([related issue](https://github.com/ziglang/zig/issues/3206))
+- We can put code & data in specific sections with `export` and `linksection(".section")`. The
+  sections can then be relocated using a linker script.
 - In Zig `0.11.0`, `volatile` seems to be broken (for MSP430 at least). The generated assembly looks
   as follows:
   ```
@@ -58,46 +52,39 @@ See also [`../Readme.md`](../Readme.md).
 ```
 blink.bin:     file format elf32-msp430
 blink.bin
-architecture: msp:14, flags 0x00000112:
-EXEC_P, HAS_SYMS, D_PAGED
+architecture: MSP430, flags 0x00000102:
+EXEC_P, D_PAGED
 start address 0x0000c000
 
 Program Header:
-    LOAD off    0x00000000 vaddr 0x0000bf8c paddr 0x0000bf8c align 2**2
-         filesz 0x0000008c memsz 0x0000008c flags r-x
-    LOAD off    0x0000008e vaddr 0x0000fffe paddr 0x0000fffe align 2**2
+    LOAD off    0x00000ffe vaddr 0x0000fffe paddr 0x0000fffe align 2**12
          filesz 0x00000002 memsz 0x00000002 flags r--
+    LOAD off    0x00001000 vaddr 0x0000c000 paddr 0x0000c000 align 2**12
+         filesz 0x00000018 memsz 0x00000018 flags r-x
+   STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**0
+         filesz 0x00000000 memsz 0x01000000 flags rw-
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .reset        00000002  0000fffe  0000fffe  0000008e  2**1
+  0 .reset        00000002  0000fffe  0000fffe  00000ffe  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00000018  0000c000  0000c000  00000074  2**2
+  1 .text         00000018  0000c000  0000c000  00001000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
 SYMBOL TABLE:
-0000fffe l    d  .reset 00000000 .reset
-0000c000 l    d  .text  00000000 .text
-00000000 l    df *ABS*  00000000 blink
-00000200 g       .reset 00000000 __ram_start
-00000400 g       .reset 00000000 __ram_end
-0000fffe g     O .reset 00000002 __reset
-0000c000 g     F .text  00000008 _start
-0000c008 g     F .text  00000010 main
+no symbols
 
 
 
 Disassembly of section .reset:
 
-0000fffe <__reset>:
+0000fffe <.reset>:
     fffe:       00 c0           interrupt service routine at 0xc000
 
 Disassembly of section .text:
 
-0000c000 <_start>:
+0000c000 <.text>:
     c000:       31 40 00 04     mov     #1024,  r1      ;#0x0400
     c004:       b0 12 08 c0     call    #-16376 ;#0xc008
-
-0000c008 <main>:
     c008:       b2 40 80 5a     mov     #23168, &0x0120 ;#0x5a80
     c00c:       20 01
     c00e:       d2 d3 22 00     bis.b   #1,     &0x0022 ;r3 As==01
