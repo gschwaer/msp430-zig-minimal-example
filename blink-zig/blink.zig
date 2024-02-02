@@ -1,22 +1,21 @@
 // Emitting a function pointer to `_start` into the `.reset` section.
-export const __reset: *const fn () callconv(.C) void linksection(".reset") = &_start;
+export const __reset: *const fn () callconv(.Naked) void linksection(".reset") = &_start;
 
-// `_start` should be `callconv(.Naked)`, because we don't want function prologue/epilogue (stack is
-// still invalid). Currently that is not possible (see https://github.com/ziglang/zig/issues/18183).
-// It works ok because we don't use any registers in `_start`, so the function prologue is empty.
-// The epilogue is also empty because `_start` (and `main`) are `noreturn`.
-export fn _start() callconv(.C) noreturn {
+// `_start` needs to be `callconv(.Naked)` (i.e., a function without prologue/epilogue), because the
+// stack is not initialized yet.
+export fn _start() callconv(.Naked) noreturn {
     // The symbol `__ram_end` is defined in the linker script.
     const stack_start = @intFromPtr(@extern(*u8, .{ .name = "__ram_end" }));
 
-    // Setup stack pointer.
+    // 1. Setup stack pointer.
+    // 2. We cannot call regular functions from .Naked functions, so we have to jump to main in
+    //    assembly.
     asm volatile (
         \\MOV %[arg1], SP
+        \\JMP main
         :
         : [arg1] "i" (stack_start), // input operand contraint "i" = immediate integer operand
     );
-
-    main();
 }
 
 export fn main() noreturn {

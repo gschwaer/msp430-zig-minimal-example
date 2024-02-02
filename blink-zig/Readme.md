@@ -60,7 +60,7 @@ Program Header:
     LOAD off    0x00000ffe vaddr 0x0000fffe paddr 0x0000fffe align 2**12
          filesz 0x00000002 memsz 0x00000002 flags r--
     LOAD off    0x00001000 vaddr 0x0000c000 paddr 0x0000c000 align 2**12
-         filesz 0x00000018 memsz 0x00000018 flags r-x
+         filesz 0x00000016 memsz 0x00000016 flags r-x
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**0
          filesz 0x00000000 memsz 0x01000000 flags rw-
 
@@ -68,7 +68,7 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .reset        00000002  0000fffe  0000fffe  00000ffe  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00000018  0000c000  0000c000  00001000  2**2
+  1 .text         00000016  0000c000  0000c000  00001000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
 SYMBOL TABLE:
 no symbols
@@ -84,10 +84,10 @@ Disassembly of section .text:
 
 0000c000 <.text>:
     c000:       31 40 00 04     mov     #1024,  r1      ;#0x0400
-    c004:       b0 12 08 c0     call    #-16376 ;#0xc008
-    c008:       b2 40 80 5a     mov     #23168, &0x0120 ;#0x5a80
-    c00c:       20 01
-    c00e:       d2 d3 22 00     bis.b   #1,     &0x0022 ;r3 As==01
-    c012:       d2 e3 21 00     xor.b   #1,     &0x0021 ;r3 As==01
-    c016:       fd 3f           jmp     $-4             ;abs 0xc012
+    c004:       00 3c           jmp     $+2             ;abs 0xc006
+    c006:       b2 40 80 5a     mov     #23168, &0x0120 ;#0x5a80
+    c00a:       20 01
+    c00c:       d2 d3 22 00     bis.b   #1,     &0x0022 ;r3 As==01
+    c010:       d2 e3 21 00     xor.b   #1,     &0x0021 ;r3 As==01
+    c014:       fd 3f           jmp     $-4             ;abs 0xc010
 ```
